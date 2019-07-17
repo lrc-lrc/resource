@@ -1,0 +1,45 @@
+package cn.tedu.storeexe;
+
+import javax.servlet.MultipartConfigElement;
+
+import org.mybatis.spring.annotation.MapperScan;
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.web.servlet.MultipartConfigFactory;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.util.unit.DataSize;
+
+@SpringBootApplication
+@Configuration
+@MapperScan("cn.tedu.storeexe.mapper")
+public class StoreExeApplication {
+
+	public static void main(String[] args) {
+		SpringApplication.run(StoreExeApplication.class, args);
+	}
+
+	@Bean
+	public MultipartConfigElement getMultipartConfigElement() {
+		MultipartConfigFactory factory
+			= new MultipartConfigFactory();
+		
+		DataSize maxFileSize = DataSize.ofMegabytes(500);
+		factory.setMaxFileSize(maxFileSize);
+		
+		DataSize maxRequestSize = DataSize.ofMegabytes(500);
+		factory.setMaxRequestSize(maxRequestSize);
+		
+		return factory.createMultipartConfig();
+	}
+	
+}
+
+
+
+
+
+
+
+
+

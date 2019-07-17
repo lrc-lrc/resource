@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"      
+ "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+
+<mapper namespace="cn.tedu.storeexe.mapper.OrderMapper">
+	
+ 		<!-- 查询结果与订单数据实体的映射 --> 
+	<resultMap type="cn.tedu.storeexe.entity.Order" id="orderEntityMap">
+		<id column="oid" property="oid"/>
+		<result column="uid" property="uid"/>
+		<result column="recv_name" property="recvName"/>
+		<result column="recv_phone" property="recvPhone"/>
+	    <result column="recv_province" property="recvProvince"/>
+	  	<result column="recv_city" property="recvCity"/>
+	    <result column="recv_area" property="recvArea"/>
+	    <result column="recv_address" property="recvAddress"/>
+	    <result column="total_price" property="totalPrice"/>    
+	    <result column="status" property="status"/>
+	    <result column="order_time" property="orderTime"/>
+	    <result column="pay_time" property="payTime"/>
+	    <result column="created_user" property="createdUser"/>
+	    <result column="created_time" property="createdTime"/>
+	    <result column="modified_user" property="modifiedUser"/>
+	    <result column="modified_time" property="modifiedTime"/>
+	</resultMap>
+	
+	<!-- 1. 插入订单数据 -->
+	<!-- Integer insertOrder(Order order); -->
+	<insert id="insertOrder" useGeneratedKeys="true" keyProperty="oid">
+		INSERT INTO t_order(
+			uid,
+			recv_name, recv_phone,
+			recv_province, recv_city,
+			recv_area, recv_address,	
+			total_price, status,
+			order_time, pay_time,
+			created_user, created_time,
+			modified_user, modified_time
+		) VALUES(
+			#{uid},
+			#{recvName}, #{recvPhone},
+			#{recvProvince}, #{recvCity},
+			#{recvArea}, #{recvAddress},			
+			#{totalPrice}, #{status},
+			#{orderTime}, #{payTime},				
+			#{createdUser}, #{createdTime},
+			#{modifiedUser}, #{modifiedTime}
+		)		
+	</insert>
+	
+	<!-- 2. 插入订单商品数据 --> 
+	<!-- Integer insertOrderItem(OrderItem orderItem); -->
+	<insert id="insertOrderItem" useGeneratedKeys="true" keyProperty="id">
+		INSERT INTO t_order_item(
+			oid,
+			pid, title,
+			image, price,
+			num,
+			created_user, created_time,
+			modified_user, modified_time
+		) VALUES(
+			#{oid},
+			#{pid}, #{title},
+			#{image}, #{price},
+			#{num},
+			#{createdUser}, #{createdTime},
+			#{modifiedUser}, #{modifiedTime}
+		)
+	</insert>
+		
+	<!-- 3. 修改订单状态	 -->
+	<!-- Integer updateStatus(@Param("oid")Integer oid,
+						 @Param("status")Integer status, 
+						 @Param("username")String username, 
+						 @Param("modifiedTime")Date modifiedTime); -->
+	<update id="updateStatus">
+		UPDATE
+			t_order
+		SET
+			status=#{status},
+			modified_user=#{username},
+			modified_time=#{modifiedTime}
+		WHERE
+			oid=#{oid}
+	</update>
+	
+	<!-- 4. 根据oid查询订单信息数据 -->
+	<!-- Order findByOid(Integer oid); -->
+	<select id="findByOid" resultMap="orderEntityMap">
+		SELECT 
+			uid,
+			recv_name, recv_phone,
+			recv_province, recv_city,
+			recv_area, recv_address,	
+			total_price, status,
+			order_time, pay_time,
+			created_user, created_time,
+			modified_user, modified_time
+		FROM
+			t_order
+		WHERE
+			oid=#{oid}
+	</select>
+	
+</mapper>
+
+
+
+
+
+
+
+
+
+
+
+
+
